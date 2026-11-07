@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A student-friendly college convocation registration and collection portal.">
+<title>GradEase | Convocation Portal</title>
+<style>
+:root{
+  --navy:#14243a; --blue:#315b88; --gold:#d8ad62; --cream:#f7f5f0;
+  --ink:#263448; --muted:#687587; --white:#fff; --line:#e6e9ee;
+  --green:#26745b; --shadow:0 16px 45px rgba(25,42,65,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+button,.btn{cursor:pointer}
+.topbar{background:var(--navy);color:#e9edf3;padding:9px 6%;font-size:12px;letter-spacing:.08em;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1200px;margin:auto;padding:15px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;color:var(--navy);font-size:20px;letter-spacing:-.04em}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-size:20px}
+nav{display:flex;gap:22px;align-items:center;font-size:13px;font-weight:700;color:#4b596b}
+nav a:hover{color:var(--blue)}
+.nav-cta,.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;padding:12px 18px;background:var(--navy);color:white;font-weight:700;font-size:13px;transition:.2s}
+.nav-cta:hover,.btn:hover{background:var(--blue);transform:translateY(-1px)}
+.menu-note{display:none}
+.hero{background:var(--navy);color:white;overflow:hidden;position:relative}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(216,173,98,.25);border-radius:50%;width:500px;height:500px;right:-130px;top:-240px}
+.hero:after{width:330px;height:330px;right:20px;top:-150px}
+.hero-inner{max-width:1200px;margin:auto;padding:88px 24px 82px;display:grid;grid-template-columns:1.2fr .8fr;gap:55px;align-items:center;position:relative;z-index:1}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:.2em;font-weight:800;text-transform:uppercase}
+h1{font-size:clamp(38px,5.5vw,66px);line-height:1.05;letter-spacing:-.05em;margin:18px 0}
+.hero p{color:#c8d1dc;max-width:610px;font-size:16px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-outline{border:1px solid rgba(255,255,255,.35);background:transparent}
+.hero-card{background:#fff;color:var(--ink);padding:28px;border-radius:16px;box-shadow:0 25px 70px rgba(0,0,0,.22);transform:rotate(1deg)}
+.hero-card-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:16px}
+.seal{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#f4ead8;color:#8b642d;font-size:23px}
+.hero-card small{color:var(--muted);font-size:10px;letter-spacing:.14em;font-weight:800}
+.hero-card h3{font-size:24px;margin:18px 0 4px;color:var(--navy)}
+.hero-card .date{color:var(--muted);font-size:13px}
+.ticket-row{display:flex;justify-content:space-between;border-top:1px dashed #d7dce3;padding-top:14px;margin-top:22px;font-size:12px}
+.ticket-row strong{color:var(--navy)}
+.stats{max-width:1100px;margin:-28px auto 0;position:relative;z-index:3;display:grid;grid-template-columns:repeat(3,1fr);background:#fff;box-shadow:var(--shadow);border-radius:12px;padding:22px}
+.stat{text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border:0}
+.stat strong{display:block;font-size:23px;color:var(--navy)}
+.stat span{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+section{padding:78px 24px}
+.section-inner{max-width:1100px;margin:auto}
+.section-heading{max-width:680px;margin-bottom:34px}
+.kicker{color:#a77a36;text-transform:uppercase;font-size:11px;letter-spacing:.18em;font-weight:800}
+h2{font-size:clamp(28px,3.5vw,42px);line-height:1.15;letter-spacing:-.04em;color:var(--navy);margin:10px 0 12px}
+.section-heading p{color:var(--muted);margin:0}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.step{padding:22px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.step-num{width:34px;height:34px;background:#f5ecdd;color:#916b32;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:13px}
+.step h3{font-size:16px;color:var(--navy);margin:15px 0 6px}
+.step p{font-size:13px;color:var(--muted);margin:0}
+.soft{background:var(--cream)}
+.form-layout{display:grid;grid-template-columns:1fr 310px;gap:24px;align-items:start}
+.form-card,.side-card,.info-card{background:white;border:1px solid var(--line);border-radius:14px;padding:28px;box-shadow:0 8px 28px rgba(25,42,65,.04)}
+.form-card h3{font-size:19px;color:var(--navy);margin:0 0 5px}
+.form-intro{font-size:13px;color:var(--muted);margin:0 0 24px}
+.form-section{padding:22px 0;border-top:1px solid var(--line)}
+.form-section:first-of-type{border-top:0;padding-top:0}
+.form-section h4{margin:0 0 16px;color:var(--navy);font-size:14px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:12px;font-weight:700;color:#435166}
+input,select,textarea{width:100%;border:1px solid #dce1e8;border-radius:7px;padding:11px 12px;background:#fff;color:var(--ink);outline:none;font-size:13px}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(49,91,136,.1)}
+.hint{font-size:11px;color:var(--muted)}
+.checkline{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#536174;margin:12px 0}
+.checkline input{width:auto;margin-top:4px}
+.radio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.radio-card{position:relative}
+.radio-card input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}
+.radio-card label{display:block;border:1px solid #dce1e8;border-radius:9px;text-align:center;padding:13px 5px;cursor:pointer;background:white}
+.radio-card label b{display:block;color:var(--navy);font-size:17px}
+.radio-card label span{font-size:10px;color:var(--muted);font-weight:400}
+.radio-card input:checked+label{border:2px solid var(--blue);background:#f1f5fa;padding:12px 4px}
+.fee-display{border-radius:10px;background:#f4f6f8;padding:16px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.fee-display strong{color:var(--navy);font-size:21px}
+.fee-display span{font-size:12px;color:var(--muted)}
+/* CSS-only robe deposit display: the selected radio option changes the amount. */
+.fee-display .amount{display:none}
+.form-card:has(#size-s:checked) .amount-s,
+.form-card:has(#size-m:checked) .amount-m,
+.form-card:has(#size-l:checked) .amount-l,
+.form-card:has(#size-xl:checked) .amount-xl{display:inline}
+.form-card:has(#size-s:checked) .fee-label:after{content:"S size selected"}
+.form-card:has(#size-m:checked) .fee-label:after{content:"M size selected"}
+.form-card:has(#size-l:checked) .fee-label:after{content:"L size selected"}
+.form-card:has(#size-xl:checked) .fee-label:after{content:"XL size selected"}
+.note{background:#fff8eb;border-left:3px solid var(--gold);padding:12px 14px;color:#71582e;font-size:12px;border-radius:0 7px 7px 0;margin-top:14px}
+.submit-row{display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+.submit-row p{font-size:11px;color:var(--muted);margin:0}
+.side-card{position:sticky;top:100px}
+.side-card h3{margin:0 0 14px;color:var(--navy);font-size:17px}
+.side-item{display:flex;gap:12px;padding:13px 0;border-top:1px solid var(--line)}
+.side-icon{width:32px;height:32px;flex:none;border-radius:9px;background:#f5ecdd;display:grid;place-items:center;color:#8e682f}
+.side-item strong{display:block;font-size:12px;color:var(--navy)}
+.side-item span{display:block;font-size:11px;color:var(--muted)}
+.side-card .mini-link{display:block;margin-top:14px;color:var(--blue);font-weight:700;font-size:12px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info-card{box-shadow:none}
+.info-card .icon{font-size:24px}
+.info-card h3{font-size:16px;color:var(--navy);margin:12px 0 6px}
+.info-card p{font-size:13px;color:var(--muted);margin:0}
+.schedule{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.schedule-row{display:grid;grid-template-columns:150px 1fr 140px;gap:20px;padding:18px 22px;border-bottom:1px solid var(--line);align-items:center}
+.schedule-row:last-child{border:0}
+.time{font-weight:800;color:#a77a36;font-size:13px}
+.event strong{display:block;color:var(--navy);font-size:14px}
+.event span{font-size:12px;color:var(--muted)}
+.tag{display:inline-block;background:#eef3f7;color:#42607d;border-radius:20px;padding:5px 10px;font-size:10px;font-weight:700;text-align:center}
+.protocol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.protocol{display:flex;gap:15px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.protocol .p-icon{font-size:22px}
+.protocol h3{margin:0 0 5px;font-size:15px;color:var(--navy)}
+.protocol p{margin:0;color:var(--muted);font-size:12px}
+.faq{max-width:850px}
+details{border-bottom:1px solid var(--line);padding:17px 0}
+summary{cursor:pointer;color:var(--navy);font-weight:700;font-size:14px}
+details p{font-size:13px;color:var(--muted);margin:10px 0 0}
+.cta{background:var(--navy);color:#fff;text-align:center;padding:62px 24px}
+.cta h2{color:white}
+.cta p{color:#c6d0dc;max-width:620px;margin:0 auto 22px}
+footer{background:#0d1929;color:#b9c4d1;padding:38px 24px}
+.footer-inner{max-width:1100px;margin:auto;display:flex;justify-content:space-between;gap:25px;flex-wrap:wrap}
+footer strong{color:white}
+footer p,footer a{font-size:11px;color:#9eacbc}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.disclaimer{max-width:1100px;margin:25px auto 0;border-top:1px solid #26364b;padding-top:15px;font-size:10px;color:#8392a4}
+@media(max-width:850px){
+ nav{display:none}.menu-note{display:block;font-size:11px;color:var(--muted)}
+ .hero-inner{grid-template-columns:1fr;padding-top:65px}.hero-card{max-width:450px}
+ .stats{margin:0 16px;grid-template-columns:1fr;padding:10px}.stat{border-right:0;border-bottom:1px solid var(--line);padding:10px}
+ .steps{grid-template-columns:repeat(2,1fr)}.form-layout{grid-template-columns:1fr}.side-card{position:static}
+ .info-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+ .topbar{font-size:10px}.nav{padding:12px 17px}.brand{font-size:17px}
+ .hero-inner{padding:55px 20px}.hero-card{padding:20px}
+ section{padding:55px 18px}.steps,.info-grid,.protocol-grid{grid-template-columns:1fr}
+ .form-card,.side-card{padding:19px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}
+ .radio-grid{grid-template-columns:repeat(2,1fr)}
+ .schedule-row{grid-template-columns:1fr;gap:5px;padding:16px}.tag{justify-self:start}
+ .submit-row .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><span>OFFICE OF STUDENT AFFAIRS · CONVOCATION SERVICES</span><span>STUDENT PORTAL &nbsp; | &nbsp; ACADEMIC CELEBRATION</span></div>
+<header>
+  <div class="nav">
+    <a class="brand" href="#home"><span class="brand-mark">G</span><span>GradEase<span style="color:#b48743">.</span></span></a>
+    <nav aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a><a href="#registration">Registration</a><a href="#robe">Robe & passes</a><a href="#schedule">Schedule</a><a href="#protocol">Guidelines</a>
+    </nav>
+    <a class="nav-cta" href="#registration">Register now ↗</a>
+    <span class="menu-note">Use the sections below ↓</span>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Your milestone. Your moment.</div>
+      <h1>The next chapter<br>starts here.</h1>
+      <p>One simple place to complete your convocation registration, choose your ceremonial robe, request family guest passes and get ready for your big day.</p>
+      <div class="hero-actions"><a class="btn btn-gold" href="#registration">Start registration →</a><a class="btn btn-outline" href="#schedule">Explore ceremony details</a></div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-top"><div><small>YOUR CONVOCATION GUIDE</small><h3>Class of Tomorrow</h3><div class="date">A celebration of every step you took.</div></div><div class="seal">✦</div></div>
+      <p style="font-size:13px;color:#657286;margin:20px 0 0">A smoother collection experience begins with a few details. Register early and keep your confirmation ready.</p>
+      <div class="ticket-row"><span>REGISTRATION</span><strong>OPEN · DEMO PORTAL</strong></div>
+      <div class="ticket-row"><span>GUEST PASSES</span><strong>UP TO 2</strong></div>
+      <div class="ticket-row"><span>ROBE SIZES</span><strong>S / M / L / XL</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><strong>01</strong><span>Student registration</span></div>
+  <div class="stat"><strong>02</strong><span>Robe & deposit selection</span></div>
+  <div class="stat"><strong>03</strong><span>Guest pass request</span></div>
+</div>
+
+<section id="how-it-works">
+ <div class="section-inner">
+  <div class="section-heading"><div class="kicker">A simple process</div><h2>Everything you need, in four steps.</h2><p>GradEase brings the important convocation tasks together so students can prepare before arriving at the collection counter.</p></div>
+  <div class="steps">
+   <article class="step"><div class="step-num">01</div><h3>Share your details</h3><p>Enter your student information, degree details, CGPA and attendance confirmation.</p></article>
+   <article class="step"><div class="step-num">02</div><h3>Select your robe</h3><p>Choose the robe size that suits you and view the corresponding refundable deposit.</p></article>
+   <article class="step"><div class="step-num">03</div><h3>Invite your guests</h3><p>Request up to two family guest passes and provide the required guest names.</p></article>
+   <article class="step"><div class="step-num">04</div><h3>Arrive prepared</h3><p>Review the ceremony schedule and follow the collection and event guidelines.</p></article>
+  </div>
+ </div>
+</section>
+
+<section class="soft" id="registration">
+ <div class="section-inner">
+  <div class="section-heading"><div class="kicker">Student registration</div><h2>Let’s get your details in order.</h2><p>Complete the form carefully. Fields marked required must be filled in before the browser accepts the form.</p></div>
+  <div class="form-layout">
+   <form class="form-card" action="#" method="get">
+    <h3>Convocation registration form</h3><p class="form-intro">Student information · Academic details · Ceremony confirmation</p>
+    <div class="form-section">
+     <h4>01 — Personal information</h4>
+     <div class="fields">
+      <div class="field"><label for="fullname">Full name *</label><input id="fullname" name="fullname" type="text" placeholder="As printed on your degree" required></div>
+      <div class="field"><label for="studentid">Student ID / Roll number *</label><input id="studentid" name="studentid" type="text" placeholder="e.g. 12345678" required></div>
+      <div class="field"><label for="email">College email *</label><input id="email" name="email" type="email" placeholder="name@college.edu" required></div>
+      <div class="field"><label for="phone">Mobile number *</label><input id="phone" name="phone" type="tel" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number" required><span class="hint">Enter 10 digits without spaces.</span></div>
+      <div class="field full"><label for="department">School / Department *</label><input id="department" name="department" type="text" placeholder="Your department or school" required></div>
+     </div>
+    </div>
+    <div class="form-section">
+     <h4>02 — Degree information</h4>
+     <div class="fields">
+      <div class="field"><label for="degree">Degree programme *</label><select id="degree" name="degree" required><option value="">Select your degree</option><option>B.Tech</option><option>BBA</option><option>BCA</option><option>BA</option><option>B.Sc.</option><option>B.Com.</option><option>MA</option><option>MCA</option><option>M.Tech</option><option>Other</option></select></div>
+      <div class="field"><label for="branch">Specialisation / Branch *</label><input id="branch" name="branch" type="text" placeholder="e.g. Computer Science" required></div>
+      <div class="field"><label for="cgpa">Final CGPA *</label><input id="cgpa" name="cgpa" type="number" min="0" max="10" step=".01" placeholder="e.g. 8.25" required><span class="hint">Enter a value from 0.00 to 10.00.</span></div>
+      <div class="field"><label for="year">Year of passing *</label><select id="year" name="year" required><option value="">Select year</option><option>2024</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option></select></div>
+     </div>
+    </div>
+    <div class="form-section">
+     <h4>03 — Attendance confirmation</h4>
+     <div class="field"><label for="attendance">Will you attend the convocation ceremony? *</label><select id="attendance" name="attendance" required><option value="">Choose an option</option><option value="yes">Yes, I will attend in person</option><option value="no">No, I cannot attend</option><option value="unsure">Not confirmed yet</option></select></div>
+     <label class="checkline"><input type="checkbox" required><span>I confirm that the information entered above is accurate and matches my official college records.</span></label>
+    </div>
+    <div class="submit-row"><button class="btn" type="submit">Review registration details →</button><p>Demo form · no information is sent to a server.</p></div>
+   </form>
+
+   <aside class="side-card">
+    <h3>Before you begin</h3>
+    <div class="side-item"><div class="side-icon">▤</div><div><strong>Keep your student ID ready</strong><span>Use the ID issued by your college.</span></div></div>
+    <div class="side-item"><div class="side-icon">✉</div><div><strong>Use an active email</strong><span>Choose an email you can access.</span></div></div>
+    <div class="side-item"><div class="side-icon">✓</div><div><strong>Check academic details</strong><span>Verify your degree title and CGPA.</span></div></div>
+    <div class="side-item"><div class="side-icon">⌂</div><div><strong>Confirm attendance</strong><span>Select the option that applies to you.</span></div></div>
+    <a class="mini-link" href="#faq">Read common questions →</a>
+   </aside>
+  </div>
+ </div>
+</section>
+
+<section id="robe">
+ <div class="section-inner">
+  <div class="section-heading"><div class="kicker">Robe collection</div><h2>Your ceremony look, sorted.</h2><p>Choose one robe size. The sample deposit values below are illustrative and can be replaced with the official college fee structure.</p></div>
+  <div class="form-layout">
+   <div class="form-card">
+    <h3>Robe size & security deposit</h3><p class="form-intro">Select a size to see its sample security deposit.</p>
+    <div class="form-section">
+     <h4>Choose your robe size *</h4>
+     <div class="radio-grid">
+      <div class="radio-card"><input id="size-s" type="radio" name="robe-size" value="S"><label for="size-s"><b>S</b><span>Small</span></label></div>
+      <div class="radio-card"><input id="size-m" type="radio" name="robe-size" value="M" checked><label for="size-m"><b>M</b><span>Medium</span></label></div>
+      <div class="radio-card"><input id="size-l" type="radio" name="robe-size" value="L"><label for="size-l"><b>L</b><span>Large</span></label></div>
+      <div class="radio-card"><input id="size-xl" type="radio" name="robe-size" value="XL"><label for="size-xl"><b>XL</b><span>Extra large</span></label></div>
+     </div>
+     <div class="fee-display"><div><span class="fee-label">Security deposit · </span><br><span class="hint">Illustrative refundable amount</span></div><strong><span class="amount amount-s">₹500</span><span class="amount amount-m">₹500</span><span class="amount amount-l">₹600</span><span class="amount amount-xl">₹600</span></strong></div>
+     <div class="note">The displayed amounts are sample values for the academic project, not official college charges. The actual deposit and refund policy must be confirmed by the university.</div>
+    </div>
+    <div class="form-section">
+     <h4>Collection preference</h4>
+     <div class="fields">
+      <div class="field"><label for="slot">Preferred collection slot</label><select id="slot"><option>Morning · 9:00 AM – 11:00 AM</option><option>Midday · 11:00 AM – 1:00 PM</option><option>Afternoon · 2:00 PM – 4:00 PM</option></select></div>
+      <div class="field"><label for="collection">Collection counter</label><select id="collection"><option>Main auditorium counter</option><option>Student services desk</option><option>Designated department counter</option></select></div>
+     </div>
+    </div>
+    <p class="hint">For this frontend demonstration, robe selection and fee display work in the browser using HTML and CSS. No payment is collected.</p>
+   </div>
+   <aside class="side-card">
+    <h3>Robe collection checklist</h3>
+    <div class="side-item"><div class="side-icon">1</div><div><strong>Bring college ID</strong><span>Carry your original student identity card.</span></div></div>
+    <div class="side-item"><div class="side-icon">2</div><div><strong>Show registration proof</strong><span>Keep your registration details accessible.</span></div></div>
+    <div class="side-item"><div class="side-icon">3</div><div><strong>Check the robe</strong><span>Verify size and condition at collection.</span></div></div>
+    <div class="side-item"><div class="side-icon">4</div><div><strong>Return after ceremony</strong><span>Follow the announced return counter process.</span></div></div>
+   </aside>
+  </div>
+ </div>
+</section>
+
+<section class="soft" id="guests">
+ <div class="section-inner">
+  <div class="section-heading"><div class="kicker">Family & guests</div><h2>Save a seat for your people.</h2><p>Students may request a maximum of two family guest passes. Choose the number of passes and add guest details below.</p></div>
+  <div class="form-layout">
+   <form class="form-card" action="#" method="get">
+    <h3>Guest pass request</h3><p class="form-intro">One request per graduating student · Maximum 2 guests</p>
+    <div class="fields">
+     <div class="field"><label for="guest-student">Student ID *</label><input id="guest-student" type="text" placeholder="Enter your student ID" required></div>
+     <div class="field"><label for="guest-count">Number of guest passes *</label><select id="guest-count" required><option value="">Select number</option><option value="0">0 — No guests</option><option value="1">1 guest pass</option><option value="2">2 guest passes</option></select></div>
+     <div class="field"><label for="guest-one">Guest 1 full name</label><input id="guest-one" type="text" placeholder="Family member name"></div>
+     <div class="field"><label for="guest-relation-one">Relationship</label><select id="guest-relation-one"><option>Parent</option><option>Sibling</option><option>Guardian</option><option>Other family member</option></select></div>
+     <div class="field"><label for="guest-two">Guest 2 full name</label><input id="guest-two" type="text" placeholder="Family member name"></div>
+     <div class="field"><label for="guest-relation-two">Relationship</label><select id="guest-relation-two"><option>Parent</option><option>Sibling</option><option>Guardian</option><option>Other family member</option></select></div>
+     <div class="field full"><label for="guest-note">Special assistance / request (optional)</label><textarea id="guest-note" rows="3" placeholder="Mention accessibility or seating assistance, if needed."></textarea></div>
+    </div>
+    <div class="note">Guest pass requests are subject to venue capacity and college approval. The final pass allocation should be confirmed by the convocation office.</div>
+    <div class="submit-row" style="margin-top:20px"><button class="btn" type="submit">Review guest request →</button><p>Demo form · no request is submitted online.</p></div>
+   </form>
+   <aside class="side-card">
+    <h3>Guest pass information</h3>
+    <div class="side-item"><div class="side-icon">♧</div><div><strong>Maximum two passes</strong><span>Each student can request up to two.</span></div></div>
+    <div class="side-item"><div class="side-icon">▣</div><div><strong>Bring valid ID</strong><span>Guests may be asked to show identification.</span></div></div>
+    <div class="side-item"><div class="side-icon">⌖</div><div><strong>Follow seat allocation</strong><span>Use the seat mentioned on the pass.</span></div></div>
+    <div class="side-item"><div class="side-icon">◷</div><div><strong>Arrive early</strong><span>Allow time for entry and security checks.</span></div></div>
+   </aside>
+  </div>
+ </div>
+</section>
+
+<section id="schedule">
+ <div class="section-inner">
+  <div class="section-heading"><div class="kicker">Plan your day</div><h2>Ceremony schedule.</h2><p>A sample event flow to help graduates and guests understand what happens on convocation day. Follow the final schedule issued by your college.</p></div>
+  <div class="schedule">
+   <div class="schedule-row"><div class="time">08:30 – 09:30 AM</div><div class="event"><strong>Student check-in & robe collection</strong><span>Verify student details and collect your ceremonial robe.</span></div><span class="tag">Graduates</span></div>
+   <div class="schedule-row"><div class="time">09:30 – 10:00 AM</div><div class="event"><strong>Guest entry & seating</strong><span>Guests enter the venue and locate their assigned seats.</span></div><span class="tag">Guests</span></div>
+   <div class="schedule-row"><div class="time">10:00 – 10:20 AM</div><div class="event"><strong>Academic procession</strong><span>Faculty and invited dignitaries enter the auditorium.</span></div><span class="tag">All attendees</span></div>
+   <div class="schedule-row"><div class="time">10:20 – 11:00 AM</div><div class="event"><strong>Welcome address & ceremony opening</strong><span>Opening remarks and formal proceedings.</span></div><span class="tag">All attendees</span></div>
+   <div class="schedule-row"><div class="time">11:00 AM – 12:30 PM</div><div class="event"><strong>Degree presentation</strong><span>Graduates are called according to the announced order.</span></div><span class="tag">Graduates</span></div>
+   <div class="schedule-row"><div class="time">12:30 – 01:00 PM</div><div class="event"><strong>Group photograph & closing</strong><span>Follow staff instructions for official photographs.</span></div><span class="tag">All attendees</span></div>
+   <div class="schedule-row"><div class="time">01:00 – 02:00 PM</div><div class="event"><strong>Robe return & dispersal</strong><span>Return the robe at the designated counter.</span></div><span class="tag">Graduates</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="soft" id="protocol">
+ <div class="section-inner">
+  <div class="section-heading"><div class="kicker">Ceremony protocol</div><h2>Know the little things before the big day.</h2><p>These simple guidelines help the ceremony remain organised, respectful and comfortable for everyone.</p></div>
+  <div class="protocol-grid">
+   <article class="protocol"><div class="p-icon">🎓</div><div><h3>Dress code</h3><p>Wear neat, formal or smart ethnic clothing beneath your ceremonial robe. Keep footwear comfortable and appropriate for the stage.</p></div></article>
+   <article class="protocol"><div class="p-icon">🪑</div><div><h3>Seating order</h3><p>Graduates should follow department or roll-number seating instructions. Guests must sit in the section assigned on their passes.</p></div></article>
+   <article class="protocol"><div class="p-icon">📷</div><div><h3>Photography rules</h3><p>Use personal cameras only where permitted. Keep aisles clear and avoid blocking the view of other attendees.</p></div></article>
+   <article class="protocol"><div class="p-icon">🔔</div><div><h3>During the ceremony</h3><p>Keep phones on silent, listen for your name and follow instructions from volunteers and event coordinators.</p></div></article>
+   <article class="protocol"><div class="p-icon">🪪</div><div><h3>Identity verification</h3><p>Carry your student ID and any registration confirmation requested by the convocation team.</p></div></article>
+   <article class="protocol"><div class="p-icon">♻️</div><div><h3>Robe return</h3><p>Return the robe and accessories to the correct counter after the ceremony. Keep the collection slip until the process is complete.</p></div></article>
+  </div>
+ </div>
+</section>
+
+<section id="faq">
+ <div class="section-inner faq">
+  <div class="section-heading"><div class="kicker">Need a quick answer?</div><h2>Frequently asked questions.</h2><p>Useful answers to common student questions.</p></div>
+  <details><summary>Can I register if I am not sure about attending?</summary><p>Use the attendance option that best reflects your current decision. Check with the college office if you need to update it later.</p></details>
+  <details><summary>How many guest passes can I request?</summary><p>A student can request a maximum of two family guest passes. Final allocation depends on the college's approval and venue capacity.</p></details>
+  <details><summary>Can I change my robe size after selecting it?</summary><p>This demonstration does not save selections. In a real system, contact the convocation desk before the announced robe-size change deadline.</p></details>
+  <details><summary>Is the robe security deposit refundable?</summary><p>The sample fee display is labelled as a refundable deposit for demonstration purposes. The actual amount, conditions and refund timeline must be confirmed by the college.</p></details>
+  <details><summary>Does this website make an actual registration?</summary><p>No. This is a frontend-only semester project. It demonstrates page structure, forms, input controls, validation, responsive layout and CSS interactions. It does not connect to a server or database.</p></details>
+  <details><summary>What should I do if my name or degree details are incorrect?</summary><p>Do not submit incorrect academic details. Contact the relevant department or examination office to confirm the official record.</p></details>
+ </div>
+</section>
+
+<section class="cta">
+ <div class="section-inner">
+  <div class="eyebrow">One milestone. A lifetime of memories.</div>
+  <h2>Make your convocation day count.</h2>
+  <p>Complete the details, plan your collection and help your family enjoy the celebration without unnecessary confusion.</p>
+  <a class="btn btn-gold" href="#registration">Go to student registration ↑</a>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="footer-inner">
+  <div><strong>GradEase.</strong><p>Convocation registration & collection portal<br>Designed as a frontend academic project.</p></div>
+  <div class="footer-links"><a href="#registration">Registration</a><a href="#robe">Robe collection</a><a href="#guests">Guest passes</a><a href="#schedule">Schedule</a><a href="#faq">FAQs</a></div>
+ </div>
+ <div class="disclaimer">ACADEMIC DEMONSTRATION ONLY · This website uses HTML5 and CSS3 only. It has no backend, database, payment gateway or real submission service. Sample dates, times and deposit amounts must be replaced with official college information before any real-world use.</div>
+</footer>
+</body>
+</html>
